@@ -1,0 +1,6 @@
+MIW Laboratiories 01
+
+Learn numpy and linalg module of it.
+Additonally learn matplotlib.
+
+Everything worth knowing is stated in course requirements.
