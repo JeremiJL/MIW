@@ -1,6 +1,5 @@
-from cProfile import label
-
 import logger
+import copy
 from gesture import Gesture
 from logger import LogLevel
 from outcome import Outcome, inverse
@@ -16,7 +15,7 @@ static_transition_matrix: dict[Gesture, dict[Gesture, float]] = {
     Gesture.SCISSORS: {Gesture.PAPER: 2 / 3, Gesture.ROCK: 0 / 3, Gesture.SCISSORS: 1 / 3}
 }
 
-learning_transition_matrix = static_transition_matrix.copy()
+learning_transition_matrix = copy.deepcopy(static_transition_matrix)
 
 # metrics
 games_played: int = 0
@@ -43,12 +42,7 @@ def visualize():
     num_of_wins_by_learning_player: int = len([win for win in learning_player_games_outcomes if win == Outcome.VICTORY])
     num_of_wins_by_static_player: int = len([win for win in static_player_game_outcomes if win == Outcome.VICTORY])
 
-    logger.log(
-        f'Games played: {games_played}, '
-        f'Games won by learning player: {num_of_wins_by_learning_player},'
-        f' Games won by static player: {num_of_wins_by_static_player},'
-        f' Learning rate applied: {learning_rate}'
-        , level=LogLevel.INFO)
+    name_of_chart_file: str = "results.png"
 
     fig, ax = plt.subplots()
 
@@ -62,13 +56,25 @@ def visualize():
             label = "static player #victories", color = "red"
     )
 
-    ax.set_title("Head-t-head record between static and learning player")
+    ax.set_title("Head-to-head record between static and learning player")
     ax.set_ylabel("Total number of victories")
     ax.set_xlabel("Game number")
     ax.grid(True)
     ax.legend()
 
-    fig.savefig("results.png")
+    fig.savefig(name_of_chart_file)
+
+    logger.log(
+        f'Games played: {games_played}, '
+        f'Games won by learning player: {num_of_wins_by_learning_player},'
+        f' Games won by static player: {num_of_wins_by_static_player},'
+        f' Learning rate applied: {learning_rate}.\n\n'
+        f'Overall learning player {"wins" if num_of_wins_by_learning_player > num_of_wins_by_static_player else "loses"},'
+        f' by the margin of {abs(num_of_wins_by_learning_player - num_of_wins_by_static_player)}.\n\n'
+        f'Final transition matrix of learning player: {learning_transition_matrix}.\n'
+        f'Transition matrix of static player: {static_transition_matrix}.\n\n'
+        f'Check {name_of_chart_file} for more details.'
+        , level=LogLevel.INFO)
 
 
 def play_game():
