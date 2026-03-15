@@ -31,15 +31,12 @@ def main():
 
     visualize()
 
-    logger.log(message=f'learning transition matrix before update {learning_transition_matrix}')
-    update_distribution(opponent_gesture=Gesture.PAPER, myGesture=Gesture.PAPER,win=True)
-    logger.log(f'learning transition matrix before update {learning_transition_matrix}')
-
-
 def visualize():
-    pass
+    logger.log(f'Games played: {games_played}, Games won by learning player: {learning_player_score}, Games won by static player: {static_player_score}')
 
 def play_game():
+    global games_played, last_move_of_static_player, last_move_of_learning_player, learning_player_score, static_player_score
+
     logger.log(f'Game number:{games_played}')
     static_player_move = pick_move(static_transition_matrix[last_move_of_learning_player])
     learning_player_move = pick_move(learning_transition_matrix[last_move_of_static_player])
@@ -52,6 +49,12 @@ def play_game():
     update_distribution(myGesture=learning_player_move, opponent_gesture=static_player_move, outcome=outcome_for_learning_player)
     logger.log(f'Updated moves transition matrix for leaning player: {learning_transition_matrix}')
 
+    last_move_of_learning_player = learning_player_move
+    last_move_of_static_player = static_player_move
+
+    games_played += 1
+    learning_player_score += 1 if outcome_for_learning_player == Outcome.VICTORY else 0
+    static_player_score +=1 if outcome_for_static_player == Outcome.VICTORY else 0
 
 
 
