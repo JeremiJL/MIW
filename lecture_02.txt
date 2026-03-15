@@ -1,0 +1,54 @@
+Lecture 02
+
+How much information is there when we observe the specific value of x?
+
+Example - tautology is information empty.
+The measure of information richeness of a sentence - it's represented with probability.
+
+Information is counter proportional to probability of an event. If event has 100% probability of occuring then it conveys
+no information - as it is tautology.
+
+Entropy is an expected value of information.
+It measures the expected amount of information needed to describe the state of the variable, considering the distribution of probabilities across all potential states.
+
+Event that has 0 probability conveys 0 information - it's an inflection point, because event with minimal probability conveys
+maximum information.
+
+0 is the smallest value for Entropy.
+
+E^ = Sum_over_each(- p(x) * log2(p(x)))
+
+base of the logarithm is related to the nature of the problem we are considering
+
+Cross-entropy - tool for comparing inaccuracyes for comparing distributions among each other, given
+that one of the distributions is hypothetically true, during learning phase, our goal is to minimize this value.
+
+Metric has to meet triangle inequality.
+
+Corelation - mathematical definition.
+
+In statistics, correlation is a kind of statistical relationship between two random variables or bivariate data. Usually it refers to the degree to which a pair of variables are linearly related. In statistics, more general relationships between variables are called an association, the degree to which some of the variability of one variable can be accounted for by the other.
+
+Dependency is a broader term that correlation.
+Corelation is  linear dependency.
+
+The formula behind corelation is about variances of every values from two considered functions.
+
+For knowladge to exist there has to be some purpose for it - a motivation for interpretation of data.
+
+Parametric models are the ones that which number of parameters is infinite.
+
+Capacity of a model - possible data that can be expressed - polynomial degree.
+For example - neural network has great capacity while perceptron has small.
+The key problem is to find well suited model for given data - that has just right capacity for it.
+Accurate model is not overly complex and have enough capacity to solve the problem.
+
+For the program to learn, we need the goal and function calculating distance to it.
+
+Models with to great capacity may overfit, while models with too small capacity tend to under fit.
+
+We have to remember about splitting data into test and training sets - test data shouldn't be seen during the training of the model. Test set answers the questions whether the model overfits.
+
+With training error decreasing after an inflection point, generalization starts to increase - we have to pick the right moment in between the training so not to cross it.
+
+The no-free lunch theorem says that on average every model performs the same, if it would be evaluated acros the entire spectrum of problems.
