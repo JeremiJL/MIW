@@ -9,5 +9,5 @@ class LogLevel(Enum):
     DEBUG = 1
 
 def log(message: str, level: LogLevel = DEBUG):
-    if level == INFO or debugEnabled:
+    if level == LogLevel.INFO or debugEnabled:
         print(message)
