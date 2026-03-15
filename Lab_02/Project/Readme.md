@@ -6,3 +6,6 @@ Follow these steps
 3. Download dependencies `pip install -r requirements.txt` 
 4. Run the simulation `python3 main.py`
 5. Read the simulation results from the console and check the generated plot under project's directory.
+
+
+_Author: Jeremi J. Lipniacki_
