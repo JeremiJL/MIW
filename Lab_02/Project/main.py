@@ -6,9 +6,6 @@ from outcome import Outcome, inverse
 import random
 import matplotlib.pyplot as plt
 
-# Markov chain simulation for rock paper and scissors
-
-
 static_transition_matrix: dict[Gesture, dict[Gesture, float]] = {
     Gesture.PAPER: {Gesture.PAPER: 2 / 3, Gesture.ROCK: 1 / 3, Gesture.SCISSORS: 0 / 3},
     Gesture.ROCK: {Gesture.PAPER: 0 / 3, Gesture.ROCK: 2 / 3, Gesture.SCISSORS: 1 / 3},
