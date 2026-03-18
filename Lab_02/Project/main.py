@@ -16,7 +16,7 @@ learning_transition_matrix = copy.deepcopy(static_transition_matrix)
 
 # metrics
 games_played: int = 0
-max_games: int = 100
+max_games: int = 10000
 static_player_game_outcomes: list[Outcome] = []
 learning_player_games_outcomes: list[Outcome] = []
 
@@ -36,15 +36,19 @@ def main():
 
 
 def visualize():
-    num_of_wins_by_learning_player: int = len([win for win in learning_player_games_outcomes if win == Outcome.VICTORY])
-    num_of_wins_by_static_player: int = len([win for win in static_player_game_outcomes if win == Outcome.VICTORY])
+    reward_of_learning_player: int = compute_reward_score_from_outcomes_history(
+        learning_player_games_outcomes
+    )
+    reward_of_static_player: int = compute_reward_score_from_outcomes_history(
+        static_player_game_outcomes
+    )
 
     name_of_chart_file: str = "results.png"
 
     fig, ax = plt.subplots()
 
-    total_wins_history_for_learning_player = compute_gradual_win_history(learning_player_games_outcomes)
-    total_wins_history_for_static_player = compute_gradual_win_history(static_player_game_outcomes)
+    total_wins_history_for_learning_player = compute_gradual_score_history(learning_player_games_outcomes)
+    total_wins_history_for_static_player = compute_gradual_score_history(static_player_game_outcomes)
 
     ax.plot(range(0,max_games), total_wins_history_for_learning_player,
             label = "learning player #victories", color = "green"
@@ -63,11 +67,11 @@ def visualize():
 
     logger.log(
         f'Games played: {games_played}, '
-        f'Games won by learning player: {num_of_wins_by_learning_player},'
-        f' Games won by static player: {num_of_wins_by_static_player},'
+        f'Reward of learning player: {reward_of_learning_player},'
+        f' Reward of by static player: {reward_of_static_player},'
         f' Learning rate applied: {learning_rate}.\n\n'
-        f'Overall learning player {"wins" if num_of_wins_by_learning_player > num_of_wins_by_static_player else "loses"},'
-        f' by the margin of {abs(num_of_wins_by_learning_player - num_of_wins_by_static_player)}.\n\n'
+        f'Overall learning player {"wins" if reward_of_learning_player > reward_of_static_player else "loses"},'
+        f' by the margin of {abs(reward_of_learning_player - reward_of_static_player)}.\n\n'
         f'Final transition matrix of learning player: {learning_transition_matrix}.\n'
         f'Transition matrix of static player: {static_transition_matrix}.\n\n'
         f'Check {name_of_chart_file} for more details.'
@@ -108,7 +112,7 @@ def update_distribution(opponent_gesture: Gesture, myGesture: Gesture, outcome: 
                 outdated_transition_matrix[gesture] += learning_rate
         elif outcome == Outcome.DEFEAT:
             if gesture != myGesture:
-                outdated_transition_matrix[gesture] += learning_rate / 2
+                outdated_transition_matrix[gesture] -= learning_rate * outdated_transition_matrix[gesture]
 
     # normalize to range (0,1)
     total: float = sum(outdated_transition_matrix.values())
@@ -142,14 +146,25 @@ def clash(your_move: Gesture, opponent_move: Gesture) -> Outcome:
 
     return clash_outcomes[your_move][opponent_move]
 
-def compute_gradual_win_history(game_outcomes: list[Outcome]) -> list[int]:
+def compute_gradual_score_history(game_outcomes: list[Outcome]) -> list[int]:
     current_total = 0
     total_gradual_wins_history = []
     for outcome in game_outcomes:
         if outcome == Outcome.VICTORY:
             current_total += 1
+        if outcome == Outcome.DEFEAT:
+            current_total -= 1
         total_gradual_wins_history.append(current_total)
     return total_gradual_wins_history
+
+def compute_reward_score_from_outcomes_history(games_outcomes: list[Outcome]) -> int:
+    reward: int = 0
+    for outcome in games_outcomes:
+        if outcome == Outcome.VICTORY:
+            reward += 1
+        elif outcome == Outcome.DEFEAT:
+            reward -= 1
+    return reward
 
 
 main()
