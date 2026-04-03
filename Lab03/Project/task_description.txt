@@ -1,0 +1,29 @@
+Project 2
+Classification
+10 points total
+
+Program 1
+Generate a dataset:
+• 2 dimensions - x1, x2
+• 4 classes (arbitrary)
+• 50 data points per class, 200 total
+
+The standard deviation, shape, and location of the cluster centers are left to your decision.
+Divide the data into a training and testing sets in a 80/20 ratio.
+
+Visualise the dataset.
+Write and train three multi-class classifiers:
+1. Using a combinations of binary perceptrons, with a
+1a. One-versus-one strategy, or
+1b. One-versus-rest strategy
+2. Using logistic regression. Use the softmax function.
+
+Visualise the accuracy of each classifier based on the test set.
+Write a 1-2 sentence comparison of approaches.
+
+Do not use predefined/pretrained classifiers available
+Grading
+• 6 points - Implementation of all three classifier models.
+• 2 points - Proper training and testing setup
+• 2 points - Graphs and analysis
+10 points total.
